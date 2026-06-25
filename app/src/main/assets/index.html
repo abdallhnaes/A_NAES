@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12372A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="A_NAES">
+<title>A_NAES - دفتر مالي احترافي</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg">
+<style>
+:root{
+  --bg:#f5f0e8;
+  --paper:#fffaf1;
+  --card:#ffffff;
+  --ink:#17231d;
+  --muted:#6b756f;
+  --line:#e4d9c8;
+  --brand:#12372A;
+  --brand2:#1E6F5C;
+  --mint:#DDF2E7;
+  --gold:#C8973E;
+  --red:#B42318;
+  --green:#147A48;
+  --blue:#2457A6;
+  --slate:#334155;
+  --shadow:0 18px 45px rgba(18,55,42,.13);
+  --soft:0 8px 24px rgba(18,55,42,.07);
+  --radius:26px;
+}
+[data-theme="dark"]{
+  --bg:#0d1412;
+  --paper:#14201c;
+  --card:#182620;
+  --ink:#ecfdf5;
+  --muted:#9fb3aa;
+  --line:#2c3c35;
+  --brand:#0f2b23;
+  --brand2:#35b08f;
+  --mint:#16382f;
+  --shadow:0 18px 45px rgba(0,0,0,.35);
+  --soft:0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(200,151,62,.24), transparent 260px),
+    radial-gradient(circle at 92% 0%, rgba(30,111,92,.22), transparent 320px),
+    var(--bg);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1040px;margin:0 auto;padding:14px 12px 104px}
+.hero{
+  background:linear-gradient(135deg,#12372A,#1E6F5C);
+  color:white;
+  border-radius:34px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+}
+.hero:before{content:"";position:absolute;width:220px;height:220px;border-radius:999px;background:rgba(255,255,255,.12);left:-70px;top:-80px}
+.hero:after{content:"";position:absolute;width:150px;height:150px;border-radius:999px;background:rgba(255,255,255,.10);right:-60px;bottom:-70px}
+.hero-inner{position:relative;z-index:2}
+.brand-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.brand-name{display:flex;gap:11px;align-items:center}
+.logo{
+  width:52px;height:52px;border-radius:19px;background:rgba(255,255,255,.17);
+  display:grid;place-items:center;border:1px solid rgba(255,255,255,.24);font-size:26px
+}
+h1{margin:0;font-size:25px}
+.hero p{margin:6px 0 0;color:#d9f8ef;font-size:13px;line-height:1.7}
+.top-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.icon-btn{
+  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.13);color:white;
+  border-radius:999px;padding:8px 10px;font-weight:900;font-size:12px;
+}
+.balance-panel{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:12px;
+}
+.main-balance{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:24px;
+  padding:14px;
+}
+.main-balance small{display:block;color:#d8f8ef;font-weight:800}
+.main-balance strong{display:block;font-size:32px;margin-top:6px;direction:ltr;text-align:right}
+.mini-ledger{display:grid;gap:8px}
+.mini-ledger div{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+  border-radius:18px;padding:10px;
+}
+.mini-ledger span{display:block;color:#d8f8ef;font-size:12px;font-weight:800}
+.mini-ledger b{display:block;margin-top:4px;direction:ltr;text-align:right}
+.install-card{
+  display:none;margin-top:12px;background:#fff7dd;color:#714a00;border:1px solid #f4d48b;
+  border-radius:20px;padding:12px;font-size:13px;line-height:1.8;
+}
+.install-card.show{display:block}
+.section{display:none;animation:fade .18s ease}
+.section.active{display:block}
+@keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:var(--soft);
+}
+.paper-card{
+  background:linear-gradient(180deg,var(--paper),var(--card));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:var(--soft);
+}
+.section-title{
+  margin:20px 4px 10px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  font-size:19px;font-weight:950;
+}
+.sub{font-size:12px;color:var(--muted);font-weight:800}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.quick{
+  border:1px solid var(--line);
+  background:var(--paper);
+  border-radius:22px;
+  padding:13px 8px;
+  color:var(--ink);
+  font-weight:950;
+  box-shadow:var(--soft);
+}
+.quick i{display:block;font-style:normal;font-size:24px;margin-bottom:5px}
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--ink);
+  border-radius:18px;
+  padding:13px;
+  outline:none;
+}
+textarea{resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--brand2);box-shadow:0 0 0 4px rgba(30,111,92,.14)}
+label{display:block;margin:12px 0 6px;color:var(--muted);font-size:13px;font-weight:950}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.btn{
+  border:0;
+  border-radius:18px;
+  padding:13px 14px;
+  background:var(--brand);
+  color:white;
+  font-weight:950;
+  box-shadow:0 10px 24px rgba(18,55,42,.22);
+}
+.btn.secondary{background:#e8dfd1;color:#241c10;box-shadow:none}
+.btn.green{background:var(--green)}
+.btn.red{background:var(--red)}
+.btn.blue{background:var(--blue)}
+.btn.gold{background:var(--gold);color:#201404}
+.btn.ghost{background:var(--card);color:var(--brand2);border:1px solid var(--line);box-shadow:none}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.btn-row .btn{flex:1;min-width:120px}
+.list{display:flex;flex-direction:column;gap:10px}
+.invoice{
+  position:relative;
+  background:linear-gradient(180deg,var(--paper),var(--card));
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:13px;
+  box-shadow:var(--soft);
+}
+.invoice:before{
+  content:"";
+  position:absolute;
+  right:14px;left:14px;top:0;
+  height:4px;border-radius:999px;
+  background:linear-gradient(90deg,var(--gold),var(--brand2));
+}
+.invoice-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-top:4px}
+.person{font-size:16px;font-weight:950}
+.amount{font-weight:950;direction:ltr}
+.amount.pos{color:var(--green)}
+.amount.neg{color:var(--red)}
+.amount.neu{color:var(--muted)}
+.meta{font-size:12px;color:var(--muted);line-height:1.8;margin-top:5px}
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:var(--mint);
+  color:var(--brand);
+  font-size:11px;
+  font-weight:950;
+  white-space:nowrap;
+}
+.badge.red{background:#fee4df;color:var(--red)}
+.badge.green{background:#dcfce7;color:var(--green)}
+.badge.blue{background:#dbeafe;color:var(--blue)}
+.badge.gold{background:#fef3c7;color:#8a5a00}
+.invoice-actions{display:flex;gap:8px;margin-top:10px}
+.invoice-actions button{flex:1;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:9px;font-weight:950;color:var(--ink)}
+.empty{
+  padding:24px;text-align:center;background:var(--paper);border:1px dashed var(--line);
+  border-radius:24px;color:var(--muted);line-height:1.8
+}
+.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.status-cell{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:11px;
+  text-align:center;
+}
+.status-cell span{font-size:12px;color:var(--muted);font-weight:900}
+.status-cell b{display:block;margin-top:5px;font-size:15px}
+.explain{
+  background:var(--mint);
+  border:1px solid rgba(30,111,92,.25);
+  color:var(--brand);
+  border-radius:18px;
+  padding:12px;
+  font-size:13px;
+  line-height:1.8;
+  margin-top:10px;
+}
+.note{
+  background:#fff4d6;
+  border:1px solid #f5d38b;
+  color:#765000;
+  border-radius:18px;
+  padding:12px;
+  font-size:13px;
+  line-height:1.8;
+  margin-top:10px;
+}
+[data-theme="dark"] .note{background:#392a12;color:#f8d68c;border-color:#7a5a22}
+.rate-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.rate-box div{
+  background:var(--paper);border:1px solid var(--line);border-radius:17px;
+  padding:10px;text-align:center;font-size:12px;font-weight:950
+}
+.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:10px 0}
+.filter-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0 12px}
+.report-grid{display:grid;gap:10px}
+.bar{height:10px;background:var(--paper);border-radius:999px;overflow:hidden;margin-top:8px;border:1px solid var(--line)}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--gold));border-radius:999px}
+.footer-nav{
+  position:fixed;right:0;left:0;bottom:0;z-index:90;
+  background:rgba(255,250,241,.94);
+  border-top:1px solid var(--line);
+  backdrop-filter:blur(16px);
+}
+[data-theme="dark"] .footer-nav{background:rgba(20,32,28,.94)}
+.nav-inner{max-width:1040px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.nav-btn{border:0;background:transparent;color:var(--muted);border-radius:17px;padding:7px 2px;font-size:11px;font-weight:950}
+.nav-btn b{display:block;font-size:18px;line-height:1}
+.nav-btn.active{background:var(--mint);color:var(--brand)}
+.toast{
+  position:fixed;left:14px;right:14px;bottom:88px;z-index:200;
+  background:#17231d;color:white;border-radius:18px;padding:12px;text-align:center;
+  box-shadow:var(--shadow);opacity:0;transform:translateY(12px);transition:.22s;font-weight:950
+}
+.toast.show{opacity:1;transform:none}
+.lock{
+  position:fixed;inset:0;background:linear-gradient(135deg,#12372A,#1E6F5C);
+  z-index:999;display:none;align-items:center;justify-content:center;padding:18px
+}
+.lock.show{display:flex}
+.lock-card{background:white;color:#17231d;border-radius:28px;padding:18px;max-width:390px;width:100%;text-align:center;box-shadow:var(--shadow)}
+.lock-card input{text-align:center;direction:ltr;letter-spacing:5px;font-size:22px}
+.backup-text{font-family:ui-monospace,Consolas,monospace;direction:ltr;text-align:left;margin-top:10px}
+@media(min-width:760px){
+  .balance-panel{grid-template-columns:1.35fr .65fr}
+  .quick-grid{max-width:700px}
+  .report-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .balance-panel{grid-template-columns:1fr}
+  .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .grid2,.grid3,.filter-row{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:1fr}
+  .status-grid{grid-template-columns:repeat(2,1fr)}
+  .rate-box{grid-template-columns:1fr}
+  .main-balance strong{font-size:28px}
+}
+@media print{
+  .hero,.footer-nav,.btn,.invoice-actions,.install-card{display:none!important}
+  .app{padding:0}
+  .section{display:block!important}
+  .section:not(#home){display:none!important}
+  .card,.paper-card,.invoice{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="lock" id="lockScreen">
+  <div class="lock-card">
+    <h2>🔒 A_NAES مقفلة</h2>
+    <p class="meta">أدخل رمز PIN للمتابعة</p>
+    <input id="pinInput" inputmode="numeric" maxlength="8" placeholder="••••">
+    <div class="btn-row"><button class="btn" id="unlockBtn">فتح</button></div>
+  </div>
+</div>
+
+<div class="app">
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand-row">
+      <div class="brand-name">
+        <div class="logo">دف</div>
+        <div>
+          <h1>A_NAES</h1>
+          <p>دفتر حساب احترافي باسم A_NAES.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn">🌙</button>
+        <button class="icon-btn" id="printBtn">طباعة</button>
+        <button class="icon-btn" id="lockBtn">قفل</button>
+      </div>
+    </div>
+
+    <div class="balance-panel">
+      <div class="main-balance">
+        <small>الرصيد الصافي بعد الحساب</small>
+        <strong id="netHero">$0.00</strong>
+        <div class="meta" style="color:#d9f8ef">الصافي = ما لك + الكاش - ما عليك</div>
+      </div>
+      <div class="mini-ledger">
+        <div><span>ما عليك</span><b id="topOwed">$0.00</b></div>
+        <div><span>ما لك</span><b id="topRec">$0.00</b></div>
+        <div><span>الكاش</span><b id="topCash">$0.00</b></div>
+      </div>
+    </div>
+
+    <div class="install-card" id="installHint">
+      <b>تثبيت كتطبيق:</b> افتح التطبيق من رابط ثم اختر تثبيت أو إضافة إلى الشاشة الرئيسية.
+      <div class="btn-row"><button class="btn gold" id="installBtn">تثبيت الآن</button></div>
+    </div>
+  </div>
+</header>
+
+<section id="home" class="section active">
+  <div class="section-title">لوحة الحساب <span class="sub" id="todayLabel"></span></div>
+  <div class="status-grid">
+    <div class="status-cell"><span>آخر حفظ</span><b id="saveStatus">—</b></div>
+    <div class="status-cell"><span>عدد الحركات</span><b id="txCount">0</b></div>
+    <div class="status-cell"><span>نسخ داخلية</span><b id="backupCount">0</b></div>
+    <div class="status-cell"><span>حالة البيانات</span><b id="healthText">سليمة</b></div>
+  </div>
+
+  <div class="section-title">إضافة سريعة <span class="sub">مثل تطبيقات المصاريف</span></div>
+  <div class="paper-card">
+    <div class="quick-grid">
+      <button class="quick" data-quick="received"><i>📥</i>قبضت</button>
+      <button class="quick" data-quick="paid"><i>📤</i>سددت</button>
+      <button class="quick" data-quick="cash"><i>💵</i>كاش</button>
+      <button class="quick" data-quick="owed"><i>⚠️</i>دين عليك</button>
+    </div>
+  </div>
+
+  <div class="section-title">دفتر الأشخاص والمشاريع <span class="sub">واضح مثل دفتر الديون</span></div>
+  <input id="balanceSearch" placeholder="ابحث عن شخص أو مشروع...">
+  <div class="list" id="balances"></div>
+</section>
+
+<section id="add" class="section">
+  <div class="section-title" id="formTitle">إضافة حركة مالية</div>
+  <div class="paper-card">
+    <input type="hidden" id="editId">
+    <label>نوع الحركة</label>
+    <select id="type">
+      <option value="owed">دين عليك</option>
+      <option value="receivable">دين لك</option>
+      <option value="cash">كاش موجود</option>
+      <option value="received">قبضت</option>
+      <option value="paid">سددت</option>
+      <option value="new_receivable">أعطيت دين لشخص</option>
+      <option value="borrowed">تدينت من شخص</option>
+      <option value="expense">مصروف</option>
+      <option value="income">دخل</option>
+    </select>
+    <div class="explain" id="typeHelp"></div>
+
+    <div class="grid2">
+      <div><label>التاريخ</label><input id="date" type="date"></div>
+      <div><label>الشخص / المشروع</label><input id="person" list="peopleList" placeholder="مثال: محمد قالب"><datalist id="peopleList"></datalist></div>
+    </div>
+
+    <div class="grid3">
+      <div><label>المبلغ</label><input id="amount" type="number" step="0.01" placeholder="0"></div>
+      <div><label>العملة</label><select id="currency"><option value="USD">دولار</option><option value="TRY">تركي</option><option value="SYP">سوري</option></select></div>
+      <div><label>سعر الصرف</label><input id="rate" type="number" step="0.0001" placeholder="1"></div>
+    </div>
+    <div class="rate-box"><div>دولار = 1</div><div>تركي مثل 46.2</div><div>سوري مثل 15000</div></div>
+    <div class="note">سعر الصرف خاص بهذه المعاملة فقط، وليس سعرًا ثابتًا لكل التطبيق.</div>
+
+    <label>ملاحظات</label>
+    <textarea id="note" rows="2" placeholder="ملاحظة اختيارية..."></textarea>
+    <div class="btn-row">
+      <button class="btn" id="saveBtn">حفظ الحركة</button>
+      <button class="btn secondary" id="resetBtn">تفريغ</button>
+    </div>
+  </div>
+</section>
+
+<section id="ledger" class="section">
+  <div class="section-title">دفتر الحركات <span class="sub" id="countLabel"></span></div>
+  <div class="toolbar">
+    <input id="search" placeholder="بحث في الحركات...">
+    <select id="filterType">
+      <option value="">كل الأنواع</option>
+      <option value="owed">دين عليك</option>
+      <option value="receivable">دين لك</option>
+      <option value="cash">كاش موجود</option>
+      <option value="received">قبضت</option>
+      <option value="paid">سددت</option>
+      <option value="new_receivable">أعطيت دين لشخص</option>
+      <option value="borrowed">تدينت من شخص</option>
+      <option value="expense">مصروف</option>
+      <option value="income">دخل</option>
+    </select>
+  </div>
+  <div class="filter-row">
+    <div><label>من تاريخ</label><input type="date" id="fromDate"></div>
+    <div><label>إلى تاريخ</label><input type="date" id="toDate"></div>
+    <div><label>ترتيب</label><select id="sortMode"><option value="new">الأحدث</option><option value="old">الأقدم</option><option value="high">الأكبر مبلغًا</option><option value="name">حسب الاسم</option></select></div>
+  </div>
+  <div class="list" id="txList"></div>
+</section>
+
+<section id="reports" class="section">
+  <div class="section-title">تقارير مختصرة</div>
+  <div class="report-grid">
+    <div class="card"><h3 style="margin-top:0">حسب نوع الحركة</h3><div id="typeReport"></div></div>
+    <div class="card"><h3 style="margin-top:0">حسب العملة</h3><div id="currencyReport"></div></div>
+  </div>
+</section>
+
+<section id="settings" class="section">
+  <div class="section-title">الإعدادات والنسخ</div>
+  <div class="card">
+    <h3 style="margin-top:0">أسعار افتراضية للإدخال السريع</h3>
+    <div class="grid2">
+      <div><label>سعر الدولار بالتركي</label><input id="defTRY" type="number" step="0.0001"></div>
+      <div><label>سعر الدولار بالسوري</label><input id="defSYP" type="number" step="0.0001"></div>
+    </div>
+    <div class="btn-row"><button class="btn" id="saveSettingsBtn">حفظ الإعدادات</button></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin-top:0">قفل PIN اختياري</h3>
+    <label>رمز PIN جديد</label><input id="pinNew" inputmode="numeric" maxlength="8" placeholder="مثال: 1234">
+    <div class="btn-row"><button class="btn blue" id="setPinBtn">تفعيل / تغيير</button><button class="btn secondary" id="removePinBtn">إزالة PIN</button></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin-top:0">نسخ احتياطي</h3>
+    <div class="btn-row"><button class="btn green" id="exportBtn">تصدير JSON</button><button class="btn blue" id="importBtn">استيراد JSON</button></div>
+    <input type="file" id="importFile" accept="application/json" hidden>
+    <div class="btn-row"><button class="btn gold" id="csvBtn">تصدير CSV</button><button class="btn ghost" id="copyBtn">إظهار البيانات</button></div>
+    <div class="btn-row"><button class="btn" id="backupBtn">حفظ نسخة داخلية</button><button class="btn secondary" id="restoreBackupBtn">استعادة نسخة داخلية</button></div>
+    <div class="btn-row"><button class="btn secondary" id="restoreDeleteBtn">استعادة آخر حذف</button><button class="btn red" id="clearBtn">حذف الكل</button></div>
+    <textarea id="backupText" class="backup-text" rows="8" placeholder="تظهر البيانات هنا..."></textarea>
+  </div>
+</section>
+</div>
+
+<nav class="footer-nav"><div class="nav-inner">
+  <button class="nav-btn active" data-tab="home"><b>🏦</b>الرئيسية</button>
+  <button class="nav-btn" data-tab="add"><b>➕</b>إضافة</button>
+  <button class="nav-btn" data-tab="ledger"><b>📒</b>الدفتر</button>
+  <button class="nav-btn" data-tab="reports"><b>📊</b>تقارير</button>
+  <button class="nav-btn" data-tab="settings"><b>⚙️</b>إعدادات</button>
+</div></nav>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY="anaes_bank_ledger_v2";
+const SETTINGS_KEY="anaes_bank_ledger_settings_v2";
+const BACKUP_KEY="anaes_bank_ledger_backups_v2";
+const DELETED_KEY="anaes_bank_ledger_deleted_v2";
+const TYPES={
+  owed:["دين عليك","red","يزيد ما عليك ولا يؤثر على الكاش."],
+  receivable:["دين لك","green","يزيد ما لك ولا يؤثر على الكاش."],
+  cash:["كاش موجود","blue","يزيد الكاش الموجود معك."],
+  received:["قبضت","green","يزيد الكاش ويُنقص ما لك عند الشخص."],
+  paid:["سددت","red","ينقص الكاش ويُنقص ما عليك للشخص."],
+  new_receivable:["أعطيت دين لشخص","green","ينقص الكاش ويزيد ما لك على الشخص."],
+  borrowed:["تدينت من شخص","red","يزيد الكاش ويزيد ما عليك للشخص."],
+  expense:["مصروف","gold","ينقص الكاش فقط."],
+  income:["دخل","blue","يزيد الكاش فقط."]
+};
+const seed=[
+ ["owed","جمعية",75,"USD",1,""],["owed","محمد قالب",40,"USD",1,""],["owed","محمد زاجل",46,"USD",1,""],["owed","خير الدين",50,"USD",1,""],["owed","محمد تيسير",5,"USD",1,""],["owed","محمد سارة",5,"USD",1,""],["owed","مرت عمي",5.7,"USD",1,""],["owed","مشروع الجبس",91,"USD",1,""],["owed","شعبان",90,"USD",1,""],
+ ["receivable","مشروع الزاجل",40,"USD",1,""],["receivable","مشروع الفول",100,"USD",1,"كحد أدنى"],["receivable","الهاتف النوت",30,"USD",1,""],["receivable","الهاتف الأزرق",15,"USD",1,""],["receivable","موفق",185,"USD",1,""],["receivable","أمي",70,"USD",1,""],["cash","المتبقي معي",15,"USD",1,""]
+];
+let settings=loadSettings(), state=loadState(), installPrompt=null;
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function today(){return new Date().toISOString().slice(0,10)}
+function loadSettings(){try{return Object.assign({tryRate:46.2,sypRate:15000,theme:"light",pin:""},JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}"))}catch(e){return{tryRate:46.2,sypRate:15000,theme:"light",pin:""}}}
+function saveSettings(){localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings))}
+function fresh(){return{version:1,updatedAt:Date.now(),transactions:seed.map(x=>({id:id(),date:"2026-06-25",type:x[0],person:x[1],amount:x[2],currency:x[3],rate:x[4],note:x[5],createdAt:Date.now()}))}}
+function norm(d){if(!d||!Array.isArray(d.transactions))return fresh();d.version=1;d.updatedAt=d.updatedAt||Date.now();d.transactions=d.transactions.map(t=>({id:t.id||id(),date:t.date||today(),type:TYPES[t.type]?t.type:"owed",person:(t.person||"بدون اسم").trim(),amount:Number(t.amount||0),currency:t.currency||"USD",rate:Number(t.rate||1),note:t.note||"",createdAt:t.createdAt||Date.now()})).filter(t=>t.amount>=0);return d}
+function loadState(){try{let v=localStorage.getItem(KEY);if(v)return norm(JSON.parse(v))}catch(e){}return fresh()}
+function backups(){try{return JSON.parse(localStorage.getItem(BACKUP_KEY)||"[]")}catch(e){return[]}}
+function backup(reason="manual"){let b=backups();b.unshift({id:id(),reason,createdAt:Date.now(),data:JSON.parse(JSON.stringify(state))});localStorage.setItem(BACKUP_KEY,JSON.stringify(b.slice(0,8)))}
+function save(){state.updatedAt=Date.now();localStorage.setItem(KEY,JSON.stringify(state));renderStatus()}
+function safe(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function usd(t){let a=Number(t.amount||0),r=Number(t.rate||1);return t.currency==="USD"?a:(r>0?a/r:0)}
+function eff(t){let v=usd(t),owed=0,rec=0,cash=0;if(t.type==="owed"||t.type==="borrowed")owed+=v;if(t.type==="paid")owed-=v;if(t.type==="receivable"||t.type==="new_receivable")rec+=v;if(t.type==="received")rec-=v;if(["cash","received","income","borrowed"].includes(t.type))cash+=v;if(["paid","expense","new_receivable"].includes(t.type))cash-=v;return{owed,rec,cash}}
+function totals(){return state.transactions.reduce((a,t)=>{let e=eff(t);a.owed+=e.owed;a.rec+=e.rec;a.cash+=e.cash;return a},{owed:0,rec:0,cash:0})}
+function fmt(n){let x=Number(n||0);return(x<0?"-":"")+"$"+Math.abs(x).toFixed(2)}
+function original(t){let sym=t.currency==="USD"?"$":t.currency==="TRY"?"₺":"ل.س";return `${Number(t.amount||0).toLocaleString("en-US")} ${sym}`}
+function toast(msg){let e=toastBox();e.textContent=msg;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1700)}
+function toastBox(){return document.getElementById("toast")}
+function balClass(n){return n>0?"pos":n<0?"neg":"neu"}
+function health(){let issues=0;state.transactions.forEach(t=>{if(!t.person||!t.amount||!TYPES[t.type]||(t.currency!=="USD"&&!t.rate))issues++});return issues}
+function renderStatus(){if(saveStatus)saveStatus.textContent=state.updatedAt?new Date(state.updatedAt).toLocaleTimeString("ar-SY",{hour:"2-digit",minute:"2-digit"}):"—";if(backupCount)backupCount.textContent=backups().length;if(txCount)txCount.textContent=state.transactions.length;if(healthText){let h=health();healthText.textContent=h?h+" تنبيه":"سليمة";healthText.style.color=h?"var(--gold)":"var(--green)"}}
+function render(){
+  let t=totals(),net=t.rec+t.cash-t.owed;
+  netHero.textContent=fmt(net);topOwed.textContent=fmt(t.owed);topRec.textContent=fmt(t.rec);topCash.textContent=fmt(t.cash);
+  renderBalances();renderLedger();renderReports();renderStatus();renderPeopleList();countLabel.textContent=state.transactions.length+" حركة";
+}
+function renderBalances(){
+  let q=balanceSearch.value.trim(),m={};
+  state.transactions.forEach(t=>{let e=eff(t);m[t.person]=(m[t.person]||0)+e.rec-e.owed});
+  let rows=Object.entries(m).filter(([n])=>!q||n.includes(q)).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+  balances.innerHTML=rows.length?rows.map(([n,v])=>`<div class="invoice"><div class="invoice-head"><div><div class="person">${safe(n)}</div><div class="meta">الحالة: <b>${v>0?"لك عليه":v<0?"عليك له":"مسدد"}</b></div></div><div class="amount ${balClass(v)}">${fmt(v)}</div></div></div>`).join(""):`<div class="empty">لا توجد أرصدة</div>`;
+}
+function renderLedger(){
+  let q=search.value.trim(),f=filterType.value,d1=fromDate.value,d2=toDate.value,sort=sortMode.value;
+  let rows=state.transactions.filter(t=>(!f||t.type===f)&&(!q||`${t.person} ${TYPES[t.type][0]} ${t.note||""}`.includes(q))&&(!d1||t.date>=d1)&&(!d2||t.date<=d2));
+  rows.sort((a,b)=>sort==="old"?a.date.localeCompare(b.date):sort==="high"?usd(b)-usd(a):sort==="name"?a.person.localeCompare(b.person,"ar"):b.date.localeCompare(a.date)||b.createdAt-a.createdAt);
+  txList.innerHTML=rows.length?rows.map(t=>{let tp=TYPES[t.type],v=usd(t);return `<div class="invoice"><div class="invoice-head"><div><div class="person">${safe(t.person)}</div><div class="meta">${safe(t.date)} — ${safe(t.note||"بدون ملاحظة")}</div></div><span class="badge ${tp[1]}">${tp[0]}</span></div><div class="meta">المبلغ الأصلي: <b>${original(t)}</b> | سعر الصرف: <b>${safe(t.rate)}</b></div><div class="amount ${balClass(v)}">بالدولار: ${fmt(v)}</div><div class="invoice-actions"><button onclick="editTx('${t.id}')">تعديل</button><button onclick="deleteTx('${t.id}')">حذف</button></div></div>`}).join(""):`<div class="empty">لا توجد حركات مطابقة</div>`;
+}
+function reportRow(label,val,max){let pct=Math.min(100,val/max*100);return `<div class="invoice"><div class="invoice-head"><div class="person">${safe(label)}</div><div class="amount">${fmt(val)}</div></div><div class="bar"><span style="width:${pct}%"></span></div></div>`}
+function renderReports(){
+  let byType={},byCur={},max=1;state.transactions.forEach(t=>{let v=Math.abs(usd(t));byType[t.type]=(byType[t.type]||0)+v;byCur[t.currency]=(byCur[t.currency]||0)+v;max=Math.max(max,byType[t.type],byCur[t.currency])});
+  typeReport.innerHTML=Object.entries(byType).map(([k,v])=>reportRow(TYPES[k][0],v,max)).join("")||`<div class="empty">لا توجد بيانات</div>`;
+  currencyReport.innerHTML=Object.entries(byCur).map(([k,v])=>reportRow(k==="USD"?"دولار":k==="TRY"?"تركي":"سوري",v,max)).join("")||`<div class="empty">لا توجد بيانات</div>`;
+}
+function renderPeopleList(){let p=[...new Set(state.transactions.map(t=>t.person).filter(Boolean))].sort();peopleList.innerHTML=p.map(x=>`<option value="${safe(x)}"></option>`).join("")}
+function help(){typeHelp.textContent=TYPES[type.value][2]}
+function openTab(tab){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(tab).classList.add("active");document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));if(tab==="add"&&!date.value)date.value=today();render()}
+function reset(){editId.value="";formTitle.textContent="إضافة حركة مالية";date.value=today();type.value="owed";person.value="";amount.value="";currency.value="USD";rate.value=1;note.value="";help()}
+function saveTx(){let tx={id:editId.value||id(),date:date.value||today(),type:type.value,person:person.value.trim()||"بدون اسم",amount:Number(amount.value||0),currency:currency.value,rate:Number(rate.value||1),note:note.value.trim(),createdAt:Date.now()};if(tx.amount<=0)return toast("اكتب مبلغًا صحيحًا");if(tx.currency==="USD")tx.rate=1;if(tx.currency!=="USD"&&tx.rate<=0)return toast("اكتب سعر صرف صحيح");let i=state.transactions.findIndex(x=>x.id===tx.id);if(i>=0)state.transactions[i]=tx;else state.transactions.push(tx);if(state.transactions.length%5===0)backup("auto");save();reset();openTab("home");toast("تم الحفظ")}
+window.editTx=function(txid){let t=state.transactions.find(x=>x.id===txid);if(!t)return;openTab("add");formTitle.textContent="تعديل حركة";editId.value=t.id;date.value=t.date;type.value=t.type;person.value=t.person;amount.value=t.amount;currency.value=t.currency;rate.value=t.rate;note.value=t.note||"";help()}
+window.deleteTx=function(txid){let t=state.transactions.find(x=>x.id===txid);if(!t||!confirm("حذف هذه الحركة؟"))return;localStorage.setItem(DELETED_KEY,JSON.stringify(t));state.transactions=state.transactions.filter(x=>x.id!==txid);save();render();toast("تم الحذف")}
+function restoreDeleted(){try{let t=JSON.parse(localStorage.getItem(DELETED_KEY)||"null");if(!t)return toast("لا يوجد حذف محفوظ");if(state.transactions.some(x=>x.id===t.id))t.id=id();state.transactions.push(t);localStorage.removeItem(DELETED_KEY);save();render();toast("تمت الاستعادة")}catch(e){toast("تعذر الاستعادة")}}
+function restoreBackup(){let b=backups();if(!b.length)return toast("لا توجد نسخة داخلية");if(!confirm("استعادة آخر نسخة داخلية؟"))return;state=norm(b[0].data);save();render();toast("تمت الاستعادة")}
+function download(name,text,type){
+  if(window.AndroidBridge && AndroidBridge.saveFile){
+    AndroidBridge.saveFile(name, text, type || "text/plain");
+    return;
+  }
+  let blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)
+}
+function exportJSON(){backup("export");download("mizanati-bank-ledger-"+today()+".json",JSON.stringify(state,null,2),"application/json")}
+function exportCSV(){let head=["date","type","person","amount","currency","rate","usd","note"];let rows=state.transactions.map(t=>[t.date,TYPES[t.type][0],t.person,t.amount,t.currency,t.rate,usd(t).toFixed(2),t.note]);download("mizanati-ledger-"+today()+".csv",[head,...rows].map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\n"),"text/csv")}
+function importJSON(file){let r=new FileReader();r.onload=()=>{try{backup("before_import");state=norm(JSON.parse(r.result));save();render();toast("تم الاستيراد")}catch(e){toast("ملف غير صالح")}};r.readAsText(file)}
+function applyTheme(){document.documentElement.dataset.theme=settings.theme==="dark"?"dark":"light";themeBtn.textContent=settings.theme==="dark"?"☀️":"🌙"}
+function unlock(){if(pinInput.value===settings.pin){lockScreen.classList.remove("show");pinInput.value=""}else toast("رمز غير صحيح")}
+document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>openTab(b.dataset.tab));
+document.querySelectorAll(".quick").forEach(b=>b.onclick=()=>{reset();type.value=b.dataset.quick;help();openTab("add")});
+saveBtn.onclick=saveTx;resetBtn.onclick=reset;type.onchange=help;balanceSearch.oninput=renderBalances;search.oninput=renderLedger;filterType.onchange=renderLedger;fromDate.onchange=renderLedger;toDate.onchange=renderLedger;sortMode.onchange=renderLedger;
+currency.onchange=()=>{if(currency.value==="USD")rate.value=1;if(currency.value==="TRY"&&(rate.value===""||Number(rate.value)===1))rate.value=settings.tryRate;if(currency.value==="SYP"&&(rate.value===""||Number(rate.value)===1))rate.value=settings.sypRate};
+themeBtn.onclick=()=>{settings.theme=settings.theme==="dark"?"light":"dark";saveSettings();applyTheme()};printBtn.onclick=()=>window.print();lockBtn.onclick=()=>{if(settings.pin)lockScreen.classList.add("show");else toast("فعّل PIN من الإعدادات")};unlockBtn.onclick=unlock;pinInput.onkeydown=e=>{if(e.key==="Enter")unlock()};
+saveSettingsBtn.onclick=()=>{settings.tryRate=Number(defTRY.value||46.2);settings.sypRate=Number(defSYP.value||15000);saveSettings();toast("تم حفظ الإعدادات")};setPinBtn.onclick=()=>{let p=pinNew.value.trim();if(p.length<4)return toast("PIN أربعة أرقام على الأقل");settings.pin=p;saveSettings();pinNew.value="";toast("تم تفعيل PIN")};removePinBtn.onclick=()=>{settings.pin="";saveSettings();toast("تمت إزالة PIN")};
+exportBtn.onclick=exportJSON;csvBtn.onclick=exportCSV;importBtn.onclick=()=>importFile.click();importFile.onchange=e=>e.target.files[0]&&importJSON(e.target.files[0]);copyBtn.onclick=()=>{backupText.value=JSON.stringify(state,null,2);toast("ظهرت البيانات")};backupBtn.onclick=()=>{backup("manual");renderStatus();toast("تم حفظ نسخة داخلية")};restoreBackupBtn.onclick=restoreBackup;restoreDeleteBtn.onclick=restoreDeleted;clearBtn.onclick=()=>{if(confirm("حذف كل البيانات؟")){backup("before_clear");state={version:1,updatedAt:Date.now(),transactions:[]};save();render();toast("تم الحذف")}};
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;installHint.classList.add("show")});installBtn.onclick=async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null}else toast("من المتصفح اختر إضافة للشاشة الرئيسية")};
+todayLabel.textContent=new Date().toLocaleDateString("ar-SY");date.value=today();defTRY.value=settings.tryRate;defSYP.value=settings.sypRate;applyTheme();help();render();if(settings.pin)lockScreen.classList.add("show");
+window.addEventListener("error",function(e){try{if(window.AndroidBridge&&AndroidBridge.logError){AndroidBridge.logError(String(e.message||"error"));}}catch(_){}});
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}))}
+</script>
+</body>
+</html>
